@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sathvik Merugu – Senior .NET Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --surface: #0d1421;
+    --surface2: #111928;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #0080ff;
+    --accent3: #00ff9d;
+    --text: #e8edf5;
+    --muted: #6b7fa3;
+    --card-bg: #0e1829;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    background: rgba(0,212,255,0.05);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #fff; }
+
+  .btn-ghost {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SCROLL LINE ── */
+  .scroll-line {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.2s forwards;
+  }
+  .scroll-line::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 4rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p { color: var(--muted); margin-bottom: 1.2rem; }
+  .about-text strong { color: var(--text); font-style: normal; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+  .skill-card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    background: rgba(0,212,255,0.07);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .tag.green { background: rgba(0,255,157,0.07); border-color: rgba(0,255,157,0.2); color: var(--accent3); }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .exp-timeline { position: relative; }
+  .exp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .exp-item {
+    padding-left: 2.5rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -4px; top: 0.4rem;
+    width: 9px; height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .exp-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+
+  .exp-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 0.2rem 0.7rem;
+  }
+
+  .exp-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.6rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 0.25rem;
+  }
+
+  .exp-highlight {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .exp-highlight h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub-bullets { list-style: none; margin-top: 0.5rem; }
+  .sub-bullets li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.4rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .sub-bullets li::before {
+    content: '◦';
+    position: absolute;
+    left: 0;
+    color: var(--accent3);
+  }
+
+  .env-line {
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: #3d5070;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+  .env-line strong { color: #4a6080; }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  .edu-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .edu-card:hover { border-color: var(--accent); }
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .edu-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 0.2rem 0.6rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── CONTACT ── */
+  #contact { text-align: center; }
+
+  .contact-box {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    position: relative;
+  }
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, var(--accent), transparent, var(--accent2));
+    z-index: -1;
+    border-radius: inherit;
+  }
+
+  .contact-box p { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
+
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 0.9rem 1.5rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-link span { flex: 1; text-align: left; }
+  .contact-link .arrow { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: #2a3a55;
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── GLOW ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+  }
+  .orb1 { width: 600px; height: 600px; background: var(--accent2); top: -200px; right: -100px; }
+  .orb2 { width: 400px; height: 400px; background: var(--accent3); bottom: 20%; left: -100px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero, .section-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .about-grid, .edu-grid { grid-template-columns: 1fr; }
+    .scroll-line { left: 1.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">SM</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div style="position:relative;">
+    <p class="hero-tag">// Senior .NET Developer · Healthcare IT Specialist</p>
+    <h1>Sathvik<br><span>Merugu</span></h1>
+    <p class="hero-sub">7+ years building mission-critical healthcare enrollment platforms — Facets, EAM, Kafka, Azure, Oracle PL/SQL. Based in Toronto, ON.</p>
+    <div class="hero-pills">
+      <span class="pill">Facets</span>
+      <span class="pill">EAM</span>
+      <span class="pill">Azure Service Bus</span>
+      <span class="pill">Kafka</span>
+      <span class="pill">.NET Core</span>
+      <span class="pill">Oracle PL/SQL</span>
+      <span class="pill">834 EDI</span>
+      <span class="pill">Event-Driven Architecture</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+    <div class="scroll-line">Scroll to explore</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <p class="section-label reveal">// 01 — About</p>
+    <h2 class="reveal">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a <strong>Senior .NET Developer</strong> with deep specialization in US healthcare enrollment systems. I've spent 7+ years at the intersection of complex business rules and high-stakes data — where an enrollment error can affect a member's coverage.</p>
+        <p>My niche is rare: hands-on expertise in <strong>Facets, EAM, 834 EDI files, Medicare, and Marketplace enrollment</strong> combined with modern cloud and event-driven architecture skills on <strong>Azure and Kafka</strong>.</p>
+        <p>I architect systems that process hundreds of thousands of member records reliably — from real-time EAM-to-Facets pipelines to fault-tolerant Azure Service Bus integrations.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-num">7+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100K+</div>
+          <div class="stat-label">Member Records Impacted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">35%</div>
+          <div class="stat-label">Data Discrepancy Reduction</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">60%</div>
+          <div class="stat-label">Less Manual Reconciliation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <p class="section-label reveal">// 02 — Skills</p>
+    <h2 class="reveal">Technical Stack</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">⚙️</div>
+        <h3>Backend</h3>
+        <div class="skill-tags">
+          <span class="tag">C#</span>
+          <span class="tag">.NET Core</span>
+          <span class="tag">.NET Framework</span>
+          <span class="tag">ASP.NET Web API</span>
+          <span class="tag">VB.NET</span>
+          <span class="tag">Windows Services</span>
+          <span class="tag">Batch Apps</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">☁️</div>
+        <h3>Cloud — Azure</h3>
+        <div class="skill-tags">
+          <span class="tag green">Azure Service Bus</span>
+          <span class="tag green">Azure Functions</span>
+          <span class="tag green">Azure Blob Storage</span>
+          <span class="tag green">Azure API Management</span>
+          <span class="tag green">Azure Monitor</span>
+          <span class="tag green">Azure DevOps</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🏥</div>
+        <h3>Healthcare / EDI</h3>
+        <div class="skill-tags">
+          <span class="tag">Facets</span>
+          <span class="tag">EAM</span>
+          <span class="tag">834 Files</span>
+          <span class="tag">Medicare</span>
+          <span class="tag">Marketplace</span>
+          <span class="tag">On/Off-Exchange</span>
+          <span class="tag">ID Card Workflows</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🗄️</div>
+        <h3>Database</h3>
+        <div class="skill-tags">
+          <span class="tag">Oracle</span>
+          <span class="tag">PL/SQL</span>
+          <span class="tag">SQL Server</span>
+          <span class="tag">Stored Procedures</span>
+          <span class="tag">GTTs</span>
+          <span class="tag">MERGE Scripts</span>
+          <span class="tag">Query Optimization</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">📡</div>
+        <h3>Messaging & APIs</h3>
+        <div class="skill-tags">
+          <span class="tag">Kafka</span>
+          <span class="tag">Azure Service Bus</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">JSON Processing</span>
+          <span class="tag">Event-Driven Architecture</span>
+          <span class="tag">Vendor Integration</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🛠️</div>
+        <h3>DevOps & Tools</h3>
+        <div class="skill-tags">
+          <span class="tag">Jenkins</span>
+          <span class="tag">GitLab</span>
+          <span class="tag">Azure DevOps</span>
+          <span class="tag">JFrog Artifactory</span>
+          <span class="tag">Git</span>
+          <span class="tag">Jira</span>
+          <span class="tag">ServiceNow</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <p class="section-label reveal">// 03 — Experience</p>
+    <h2 class="reveal">Work History</h2>
+
+    <div class="exp-timeline">
+
+      <!-- Centene -->
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Centene Corporation / Fidelis Care</span>
+          <span class="exp-date">Aug 2022 – Present</span>
+        </div>
+        <div class="exp-role">Senior .NET Developer, Enrollment Team · Avansa IT Solutions</div>
+        <ul class="exp-bullets">
+          <li>Owned end-to-end development and production support of healthcare enrollment applications covering Medicare, Marketplace, On-Exchange, Off-Exchange, EAM, and legacy Facets systems — directly impacting 100,000+ member records.</li>
+        </ul>
+
+        <div class="exp-highlight">
+          <h4>🔗 EAM-to-Facets Event-Driven Integration Pipeline</h4>
+          <ul class="sub-bullets">
+            <li>Designed event producers in EAM publishing enrollment state-change events (new enrollment, term, plan change) to Kafka topics in real time.</li>
+            <li>Built .NET Core Kafka consumer services processing EAM events, applying business rules, and upserting into Facets — eliminating nightly batch lag and reducing data discrepancies by ~35%.</li>
+            <li>Leveraged Azure Service Bus as a dead-letter and retry layer for failed Kafka messages, ensuring zero message loss during downstream outages.</li>
+            <li>Reduced manual reconciliation effort between EAM and Facets by ~60%, freeing 10+ hours per week of operations team time.</li>
+          </ul>
+        </div>
+
+        <ul class="exp-bullets">
+          <li>Integrated Azure Blob Storage for secure staging and archival of inbound 834 enrollment files from state and federal sources, replacing on-premise file shares.</li>
+          <li>Leveraged Azure API Management (APIM) to expose and govern internal enrollment REST APIs across 5+ consumer systems with rate limiting and monitoring.</li>
+          <li>Engineered 834 enrollment file processing pipeline — reducing processing errors by ~25% through enhanced validation logic.</li>
+          <li>Delivered 15+ enhancements across .NET Framework, .NET Core, C#, and VB.NET applications, shrinking the defect backlog by 40% over 18 months.</li>
+          <li>Designed and optimized Oracle PL/SQL stored procedures, packages, MERGE scripts, and GTT-based batch queries — cutting critical batch runtimes by up to 30%.</li>
+          <li>Led production incident triage (P1/P2) across logs, database records, Kafka messages, and Azure Monitor alerts — consistently meeting SLA resolution windows.</li>
+          <li>Coordinated 20+ production deployments with zero major rollback incidents in the last 2 years.</li>
+        </ul>
+        <div class="env-line"><strong>Stack:</strong> C#, .NET Framework, .NET Core, VB.NET, ASP.NET Web API, Oracle/PL/SQL, Kafka, Azure Service Bus, Azure Blob Storage, Azure APIM, Azure Monitor, Azure DevOps, 834 Files, Facets, EAM, Jenkins, GitLab, Angular, Jira</div>
+      </div>
+
+      <!-- Workjam -->
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Workjam</span>
+          <span class="exp-date">Aug 2018 – Jul 2019</span>
+        </div>
+        <div class="exp-role">Full Stack .NET Developer</div>
+        <ul class="exp-bullets">
+          <li>Developed and maintained web application modules using C#, ASP.NET MVC, ASP.NET Web API, Entity Framework, SQL Server, and Angular — supporting both internal tools and customer-facing product features.</li>
+          <li>Built and consumed REST APIs to automate business workflows, reducing manual data-entry effort and improving cross-system data consistency.</li>
+          <li>Created SQL Server stored procedures and data migration scripts supporting key feature releases and production deployments.</li>
+          <li>Collaborated in Agile/Scrum ceremonies, conducted code reviews, and contributed to CI/CD pipelines — consistently meeting sprint commitments.</li>
+        </ul>
+        <div class="env-line"><strong>Stack:</strong> C#, ASP.NET MVC, ASP.NET Web API, .NET Framework, Entity Framework, SQL Server, T-SQL, Angular, HTML5, CSS3, Bootstrap, Git, Jira, Visual Studio</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-wrap">
+    <p class="section-label reveal">// 04 — Education</p>
+    <h2 class="reveal">Academic Background</h2>
+    <div class="edu-grid">
+
+      <div class="edu-card reveal">
+        <span class="edu-badge">🇨🇦 Canada</span>
+        <div class="edu-degree">PG Diploma – Mobile Application Development</div>
+        <div class="edu-school">[Add Institution Name] · [Add Year]</div>
+      </div>
+
+      <div class="edu-card reveal">
+        <span class="edu-badge">🇮🇳 India</span>
+        <div class="edu-degree">Bachelor of Engineering – Computer Science</div>
+        <div class="edu-school">Vardhaman College of Engineering · [Add Year]</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <p class="section-label reveal">// 05 — Contact</p>
+    <h2 class="reveal">Get In Touch</h2>
+    <div class="contact-box reveal">
+      <p>Open to senior .NET, healthcare IT, and cloud-focused roles. Let's connect.</p>
+      <div class="contact-links">
+        <a href="mailto:[Add Email]" class="contact-link">
+          <span>📧 [Add Email]</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="tel:[Add Phone]" class="contact-link">
+          <span>📞 [Add Phone]</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="https://linkedin.com/in/[Add LinkedIn]" target="_blank" class="contact-link">
+          <span>🔗 LinkedIn Profile</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="contact-link">
+          <span>📍 Toronto, ON, Canada</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Sathvik Merugu</p>
+  <p>Senior .NET Developer · Healthcare IT · Toronto, ON</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
